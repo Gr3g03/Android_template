@@ -1,28 +1,40 @@
 package com.example.test.presentation
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.text.TextUtils.replace
-import android.widget.Button
-import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.navigation.NavController
+import androidx.navigation.fragment.NavHostFragment
 import com.example.test.R
-import com.example.test.domain.models.UserModel
-import com.example.test.presentation.user_profile.UserProfileFragment
+import com.example.test.databinding.ActivityMainBinding
+import com.example.test.presentation.to_do.ToDoFragment
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
+
+    private lateinit var binding: ActivityMainBinding
+
+    private lateinit var navController: NavController
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        setContentView(R.layout.activity_main)
+        binding = ActivityMainBinding.inflate(layoutInflater)
 
-        replaceFragment(UserProfileFragment())
+        setUpBottomNavigation()
+
+        setContentView(binding.root)
     }
 
-    private fun replaceFragment(fragment: Fragment) {
-        val fragmentManager = supportFragmentManager
-        val fragmentTransaction = fragmentManager.beginTransaction()
-        fragmentTransaction.replace(R.id.fragment, fragment)
-        fragmentTransaction.commit()
+
+    private fun setUpBottomNavigation() {
+        val navHostFragment =
+            supportFragmentManager
+                .findFragmentById(binding.navHostFragmentActivityApp.id) as NavHostFragment?
+
+        if (navHostFragment != null) navController = navHostFragment.navController
     }
+
+
 }
