@@ -7,5 +7,5 @@ import kotlinx.coroutines.flow.Flow
 
 interface ToDoRepository {
     fun getData():Flow<Resource<List<ToDoModel>>>
-    fun createData():Flow<Resource<List<ToDoPostDto>>>
+    suspend fun createData(model: ToDoPostDto):Flow<Resource<Unit>>
 }

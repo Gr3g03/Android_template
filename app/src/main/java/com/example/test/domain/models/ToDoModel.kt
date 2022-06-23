@@ -1,8 +1,8 @@
 package com.example.test.domain.models
 
 data class ToDoModel(
-    val id: Int,
+    val id: Int? = null,
     val todo: String,
-    val completed: Boolean,
+    val completed: Boolean = false,
     val userId: Int
 )

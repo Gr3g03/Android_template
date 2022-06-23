@@ -2,6 +2,7 @@ package com.example.test.presentation.to_do
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.test.data.remote.dto.ToDoPostDto
 import com.example.test.domain.models.ToDoModel
 import com.example.test.domain.repository.ToDoRepository
 import com.example.test.util.Resource
@@ -41,5 +42,17 @@ class ToDoViewModel @Inject constructor(
             }
     }
 
-
+    fun addToDo(model: ToDoPostDto) {
+        viewModelScope.launch {
+            repository
+                .createData(model)
+                .collect { resource ->
+                    when (resource) {
+                        is Resource.Error -> Unit
+                        is Resource.Loading -> Unit
+                        is Resource.Success -> Unit
+                    }
+                }
+        }
+    }
 }

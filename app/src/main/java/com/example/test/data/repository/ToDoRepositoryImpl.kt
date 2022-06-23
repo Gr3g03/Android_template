@@ -36,7 +36,7 @@ class ToDoRepositoryImpl @Inject constructor(
             emit(Resource.Success(cache.map { it.toToDoModel() }))
 
         val remoteData = try {
-             api.getData()
+            api.getData()
         } catch (e: IOException) {
             e.printStackTrace()
             emit(Resource.Error(e.message.toString()))
@@ -58,7 +58,20 @@ class ToDoRepositoryImpl @Inject constructor(
         emit(Resource.Loading(false))
     }
 
-    override fun createData(): Flow<Resource<List<ToDoPostDto>>> {
-        TODO("Not yet implemented")
+    override suspend fun createData(model: ToDoPostDto): Flow<Resource<Unit>> = flow {
+
+        emit(Resource.Loading(true))
+
+        delay(10)
+
+        dao.create(model.toToDoEntity())
+
+        api.createData(model)
+
+        emit(Resource.Success(Unit))
+
+        delay(10)
+
+        emit(Resource.Loading(false))
     }
 }

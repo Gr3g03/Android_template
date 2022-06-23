@@ -12,6 +12,8 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.test.R
+import com.example.test.databinding.FragmentAddToDoBinding
+import com.example.test.databinding.FragmentToDoBinding
 import com.example.test.presentation.to_do.recycler_view.ToDoRecycleViewAdapter
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import dagger.hilt.android.AndroidEntryPoint
@@ -22,6 +24,9 @@ import kotlinx.coroutines.launch
 @AndroidEntryPoint
 class ToDoFragment : Fragment() {
 
+    private var _binding: FragmentToDoBinding? = null
+    val binding: FragmentToDoBinding get() = _binding!!
+
     private val viewModel: ToDoViewModel by viewModels()
 
     private val adapter = ToDoRecycleViewAdapter()
@@ -30,18 +35,16 @@ class ToDoFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        val view = inflater.inflate(R.layout.fragment_to_do, container, false)
+    ): View {
+        _binding = FragmentToDoBinding.inflate(inflater, container, false)
 
-        val recyclerView: RecyclerView = view.findViewById(R.id.recycle_to_do)
 
-        val fab: FloatingActionButton = view.findViewById(R.id.addBtn)
 
-        fab.setOnClickListener {
+        binding.addBtn.setOnClickListener {
                 findNavController().navigate(R.id.navigation_add_to_do)
         }
 
-        recyclerView.apply {
+        binding.recycleToDo.apply {
 
             addItemDecoration(
                 DividerItemDecoration(
@@ -54,7 +57,7 @@ class ToDoFragment : Fragment() {
             setHasFixedSize(true)
         }
 
-        return view
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
